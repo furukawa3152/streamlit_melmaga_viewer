@@ -38,15 +38,14 @@ def authenticate(password):
 # UIの作成
 def app():
     st.title('melmaga_viewer')
-
-    # パスワード入力
-    password = st.text_input("パスワードを入力してください", type="password")
+    # サイドバーにパスワード入力を配置
+    password = st.sidebar.text_input("パスワードを入力してください", type="ocomoji0616")
 
     if not authenticate(password):
-        st.error("パスワードが間違っています")
+        st.sidebar.error("パスワードが間違っています")
         return
 
-    st.success("パスワードが認証されました！")
+    st.sidebar.success("パスワードが認証されました！")
 
     # 日付のドロップダウン
     unique_dates = df["ymd"].unique()
