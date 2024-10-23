@@ -63,6 +63,7 @@ def app():
 
     # 選択した見出しに基づいて本文を表示
     if selected_title:
+        st.subheader(selected_title)
         selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
         st.write(selected_article)
 
