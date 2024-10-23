@@ -58,12 +58,14 @@ def app():
         st.write("選択した日付には記事がありません。")
         return
 
-    selected_title = st.selectbox("見出しを選んでください", filtered_df["title"])
+    # 見出しをサイドバーに一覧表示（radioボタン形式）
+    selected_title = st.sidebar.radio("見出しを選んでください", filtered_df["title"])
 
     # 選択した見出しに基づいて本文を表示
     if selected_title:
-        selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
+        selected_article = filtered_df[filtered_df["見出し"] == selected_title]["value"].values[0]
         st.write(f"本文: {selected_article}")
+
 
 
 # Streamlitアプリを実行
