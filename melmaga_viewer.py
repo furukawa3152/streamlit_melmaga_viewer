@@ -27,5 +27,46 @@ df = pd.DataFrame(data)
 df.columns = df.iloc[0]
 # 一行目を削除する
 df = df[1:]
-st.title('melmaga_viewer')
-st.dataframe(df,hide_index=True,)
+
+
+
+# パスワード認証
+def authenticate(password):
+    return password == "ocomoji"
+
+
+# UIの作成
+def app():
+    st.title('melmaga_viewer')
+
+    # パスワード入力
+    password = st.text_input("パスワードを入力してください", type="password")
+
+    if not authenticate(password):
+        st.error("パスワードが間違っています")
+        return
+
+    st.success("パスワードが認証されました！")
+
+    # 日付のドロップダウン
+    unique_dates = df["日付"].unique()
+    selected_date = st.selectbox("日付を選択してください", unique_dates)
+
+    # 選択した日付に基づいて見出しを取得
+    filtered_df = df[df["日付"] == selected_date]
+
+    if filtered_df.empty:
+        st.write("選択した日付には記事がありません。")
+        return
+
+    selected_title = st.selectbox("見出しを選んでください", filtered_df["見出し"])
+
+    # 選択した見出しに基づいて本文を表示
+    if selected_title:
+        selected_article = filtered_df[filtered_df["見出し"] == selected_title]["本文"].values[0]
+        st.write(f"本文: {selected_article}")
+
+
+# Streamlitアプリを実行
+if __name__ == "__main__":
+    app()
