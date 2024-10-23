@@ -60,8 +60,8 @@ def app():
 
     # 各見出しをexpanderで表示
     for index, row in filtered_df.iterrows():
-        with st.sidebar.expander(row["見出し"]):
-            st.write(f"本文: {row['本文']}")
+        with st.sidebar.expander(row["title"]):
+            st.write(f"本文: {row['value']}")
 
 
 
