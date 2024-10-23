@@ -58,10 +58,13 @@ def app():
         st.write("選択した日付には記事がありません。")
         return
 
-    # 各見出しをexpanderで表示
-    for index, row in filtered_df.iterrows():
-        with st.expander(row["title"]):
-            st.write(f"本文: {row['value']}")
+    # 見出しをサイドバーに一覧表示（radioボタン形式）
+    selected_title = st.sidebar.radio("見出しを選んでください", filtered_df["title"])
+
+    # 選択した見出しに基づいて本文を表示
+    if selected_title:
+        selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
+        st.write(selected_article)
 
 
 
