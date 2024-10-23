@@ -58,14 +58,28 @@ def app():
         st.write("選択した日付には記事がありません。")
         return
 
-    # 見出しをサイドバーに一覧表示（radioボタン形式）
-    selected_title = st.sidebar.radio("見出しを選んでください", filtered_df["title"])
+    # タブの作成
+    tabs = st.tabs(["PC", "mobile"])
 
-    # 選択した見出しに基づいて本文を表示
-    if selected_title:
-        st.subheader(selected_title)
-        selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
-        st.write(selected_article)
+    # タブ1: Radioボタン形式
+    with tabs[0]:
+        # st.subheader("Radioボタン形式の表示")
+        # 見出しをサイドバーに一覧表示（radioボタン形式）
+        selected_title = st.sidebar.radio("title", filtered_df["title"])
+
+        # 選択した見出しに基づいて本文を表示
+        if selected_title:
+            st.subheader(selected_title)
+            selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
+            st.write(selected_article)
+
+    # タブ2: Expander形式
+    with tabs[1]:
+        # st.subheader("Expander形式の表示")
+        # 各見出しごとにExpanderを作成し、本文を表示
+        for index, row in filtered_df.iterrows():
+            with st.expander(row["title"]):
+                st.write(row["value"])
 
 
 
