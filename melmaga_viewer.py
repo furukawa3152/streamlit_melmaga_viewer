@@ -32,14 +32,14 @@ df = df[1:]
 
 # パスワード認証
 def authenticate(password):
-    return password == "ocomoji"
+    return password == "ocomoji0616"
 
 
 # UIの作成
 def app():
     st.title('melmaga_viewer')
     # サイドバーにパスワード入力を配置
-    password = st.sidebar.text_input("パスワードを入力してください", type="ocomoji0616")
+    password = st.sidebar.text_input("パスワードを入力してください", type="password")
 
     if not authenticate(password):
         st.sidebar.error("パスワードが間違っています")
