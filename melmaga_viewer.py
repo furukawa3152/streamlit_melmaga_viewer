@@ -61,10 +61,10 @@ def app():
     # 見出しをサイドバーに一覧表示（radioボタン形式）
     selected_title = st.sidebar.radio("見出しを選んでください", filtered_df["title"])
 
-    # 選択した見出しに基づいて本文を表示
-    if selected_title:
-        selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
-        st.write(f"本文: {selected_article}")
+    # 見出しごとにボタンを作成して表示
+    for index, row in filtered_df.iterrows():
+        if st.sidebar.button(row["title"]):
+            st.write(f"本文: {row['value']}")
 
 
 
