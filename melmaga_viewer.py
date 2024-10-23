@@ -49,21 +49,21 @@ def app():
     st.success("パスワードが認証されました！")
 
     # 日付のドロップダウン
-    unique_dates = df["日付"].unique()
+    unique_dates = df["ymd"].unique()
     selected_date = st.selectbox("日付を選択してください", unique_dates)
 
     # 選択した日付に基づいて見出しを取得
-    filtered_df = df[df["日付"] == selected_date]
+    filtered_df = df[df["ymd"] == selected_date]
 
     if filtered_df.empty:
         st.write("選択した日付には記事がありません。")
         return
 
-    selected_title = st.selectbox("見出しを選んでください", filtered_df["見出し"])
+    selected_title = st.selectbox("見出しを選んでください", filtered_df["title"])
 
     # 選択した見出しに基づいて本文を表示
     if selected_title:
-        selected_article = filtered_df[filtered_df["見出し"] == selected_title]["本文"].values[0]
+        selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
         st.write(f"本文: {selected_article}")
 
 
