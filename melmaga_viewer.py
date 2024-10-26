@@ -59,7 +59,7 @@ def app():
         return
 
     # タブの作成
-    tabs = st.tabs(["PC", "mobile"])
+    tabs = st.tabs(["PC", "mobile","検索"])
 
     # タブ1: Radioボタン形式
     with tabs[0]:
@@ -80,6 +80,18 @@ def app():
         for index, row in filtered_df.iterrows():
             with st.expander(row["title"]):
                 st.write(row["value"])
+    # タブ3: 検索機能
+    with tabs[2]:
+        search_query = st.text_input("検索キーワードを入力してください")
+        if search_query:
+            # `value`カラムにキーワードが含まれている行を抽出
+            search_results = filtered_df[filtered_df["value"].str.contains(search_query, na=False)]
+            if search_results.empty:
+                st.write("検索結果が見つかりませんでした。")
+            else:
+                for index, row in search_results.iterrows():
+                    with st.expander(row["title"]):
+                        st.write(row["value"])
 
 
 
