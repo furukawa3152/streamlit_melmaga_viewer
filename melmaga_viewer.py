@@ -1,5 +1,4 @@
 import streamlit as st
-import os
 import pandas as pd
 import gspread
 from google.oauth2.service_account import Credentials
@@ -18,8 +17,6 @@ SPREADSHEET_KEY = st.secrets["SPREADSHEET_KEY"]
 # スプレッドシート（ブック）を開く
 workbook = gc.open_by_key(SPREADSHEET_KEY)
 
-# シートの一覧を取得する。（リスト形式）
-worksheets = workbook.worksheets()
 # シートを開く
 sheet = workbook.worksheet('シート1')
 data = sheet.get_all_values()
@@ -59,7 +56,7 @@ def app():
         if filtered_df.empty:
             st.write("選択した日付には記事がありません。")
         else:
-            selected_title = st.sidebar.radio("title", filtered_df["title"], key="title_radio")
+            selected_title = st.sidebar.radio("タイトルを選択してください", filtered_df["title"], key="title_radio_tab1")
             if selected_title:
                 st.subheader(selected_title)
                 selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
