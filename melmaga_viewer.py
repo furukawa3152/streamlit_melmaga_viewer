@@ -43,42 +43,36 @@ def app():
 
     st.sidebar.success("パスワードが認証されました！")
 
+    # グローバルに日付選択ドロップダウンを配置
+    unique_dates = df["ymd"].unique()
+    selected_date = st.selectbox("日付を選択してください", unique_dates)
+
+    # 選択した日付に基づいてフィルタリング
+    filtered_df = df[df["ymd"] == selected_date]
+    if filtered_df.empty:
+        st.write("選択した日付には記事がありません。")
+        return
+
     # タブの作成
     tabs = st.tabs(["PC", "mobile", "検索"])
 
     # タブ1: Radioボタン形式
     with tabs[0]:
-        unique_dates = df["ymd"].unique()
-        selected_date = st.selectbox("日付を選択してください", unique_dates, key="date_select_tab1")
-
-        # 選択した日付に基づいてフィルタリング
-        filtered_df = df[df["ymd"] == selected_date]
-        if filtered_df.empty:
-            st.write("選択した日付には記事がありません。")
-        else:
-            selected_title = st.sidebar.radio("タイトルを選択してください", filtered_df["title"], key="title_radio_tab1")
-            if selected_title:
-                st.subheader(selected_title)
-                selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
-                st.write(selected_article)
+        selected_title = st.sidebar.radio("タイトルを選択してください", filtered_df["title"])
+        if selected_title:
+            st.subheader(selected_title)
+            selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
+            st.write(selected_article)
 
     # タブ2: Expander形式
     with tabs[1]:
-        unique_dates = df["ymd"].unique()
-        selected_date = st.selectbox("日付を選択してください", unique_dates, key="date_select_tab2")
-
-        # 選択した日付に基づいてフィルタリング
-        filtered_df = df[df["ymd"] == selected_date]
-        if filtered_df.empty:
-            st.write("選択した日付には記事がありません。")
-        else:
-            for index, row in filtered_df.iterrows():
-                with st.expander(row["title"]):
-                    st.write(row["value"])
+        for index, row in filtered_df.iterrows():
+            with st.expander(row["title"]):
+                st.write(row["value"])
 
     # タブ3: 検索機能（全データ対象）
     with tabs[2]:
-        search_query = st.text_input("検索キーワードを入力してください", key="search_input")
+        search_query = st.text_input("検索キーワードを入力してください")
         if search_query:
             # `value`カラムにキーワードが含まれている行を全データから抽出
             search_results = df[df["value"].str.contains(search_query, na=False)]
