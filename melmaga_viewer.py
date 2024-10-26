@@ -49,29 +49,35 @@ def app():
     # タブの作成
     tabs = st.tabs(["PC", "mobile", "検索"])
 
-    # タブ1, タブ2で使用する日付選択
-    with tabs[0], tabs[1]:
+    # タブ1: Radioボタン形式
+    with tabs[0]:
         unique_dates = df["ymd"].unique()
-        selected_date = st.selectbox("日付を選択してください", unique_dates, key="date_select")
+        selected_date = st.selectbox("日付を選択してください", unique_dates, key="date_select_tab1")
 
         # 選択した日付に基づいてフィルタリング
         filtered_df = df[df["ymd"] == selected_date]
         if filtered_df.empty:
             st.write("選択した日付には記事がありません。")
         else:
-            if st.session_state.get("active_tab") == 0:
-                # タブ1: Radioボタン形式
-                selected_title = st.sidebar.radio("title", filtered_df["title"], key="title_radio")
-                if selected_title:
-                    st.subheader(selected_title)
-                    selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
-                    st.write(selected_article)
+            selected_title = st.sidebar.radio("title", filtered_df["title"], key="title_radio")
+            if selected_title:
+                st.subheader(selected_title)
+                selected_article = filtered_df[filtered_df["title"] == selected_title]["value"].values[0]
+                st.write(selected_article)
 
-            elif st.session_state.get("active_tab") == 1:
-                # タブ2: Expander形式
-                for index, row in filtered_df.iterrows():
-                    with st.expander(row["title"]):
-                        st.write(row["value"])
+    # タブ2: Expander形式
+    with tabs[1]:
+        unique_dates = df["ymd"].unique()
+        selected_date = st.selectbox("日付を選択してください", unique_dates, key="date_select_tab2")
+
+        # 選択した日付に基づいてフィルタリング
+        filtered_df = df[df["ymd"] == selected_date]
+        if filtered_df.empty:
+            st.write("選択した日付には記事がありません。")
+        else:
+            for index, row in filtered_df.iterrows():
+                with st.expander(row["title"]):
+                    st.write(row["value"])
 
     # タブ3: 検索機能（全データ対象）
     with tabs[2]:
