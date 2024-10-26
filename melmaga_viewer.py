@@ -90,7 +90,8 @@ def app():
                 st.write("検索結果が見つかりませんでした。")
             else:
                 for index, row in search_results.iterrows():
-                    with st.expander(row["title"]):
+                    expander_title = f"{row['ymd']} - {row['title']}"  # ymdとtitleを結合して表示
+                    with st.expander(expander_title):
                         st.write(row["value"])
 
 
